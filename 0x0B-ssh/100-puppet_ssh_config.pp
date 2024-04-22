@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # This script contains a puppet manifest that sets up a client SSH configuration for passwordless connection
 
+# find the file
+file { '~/.ssh/config':
+  ensure  => present,
+}
+
 # Dissable password authentication
 file_line { 'Turn off passwd auth':
-  path    => '/etc/ssh/ssh_config',
+  path    => '~/.ssh/config',
   line    => 'PasswordAuthentication no',
   match   => '^#?PasswordAuthentication',
   ensure  => present,
@@ -11,7 +16,7 @@ file_line { 'Turn off passwd auth':
 
 # Declare the identity file
 file_line { 'Declare identity file':
-  path    => '/etc/ssh/ssh_config',
+  path    => '~/.ssh/config',
   line    => 'IndentityFile ~/.ssh/school',
   match   => '^#?IdentityFile',
   ensure  => present,
