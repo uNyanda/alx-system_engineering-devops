@@ -8,16 +8,16 @@ file { '~/.ssh/config':
 
 # Dissable password authentication
 file_line { 'Turn off passwd auth':
-  path    => '~/.ssh/config',
-  line    => 'PasswordAuthentication no',
-  match   => '^#?PasswordAuthentication',
-  ensure  => present,
+  ensure => present,
+  line   => 'PasswordAuthentication no',
+  match  => '^#?PasswordAuthentication',
+  path   => '~/.ssh/config',
 }
 
 # Declare the identity file
 file_line { 'Declare identity file':
-  path    => '~/.ssh/config',
-  line    => 'IndentityFile ~/.ssh/school',
-  match   => '^#?IdentityFile',
-  ensure  => present,
+  ensure => present,
+  line   => 'IndentityFile ~/.ssh/school',
+  match  => '^#?IdentityFile',
+  path   => '~/.ssh/config',
 }
