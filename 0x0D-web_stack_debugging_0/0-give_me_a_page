@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# These are the commands are used to debug a docker container and return a page containing Hello Holberton
+# These are the commands that I used to debug a docker container to return a page containing Hello Holberton
 
 docker run -p 8080:80 -d -it holbertonschool/265-0
 docker ps
-docker exec -it vigilant_tesla /bin/bash
+docker exec -it bdc28b5cc4c8 /bin/bash
 service apache2 start
 ls /var/www/html
 service apache2 restart
