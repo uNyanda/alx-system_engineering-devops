@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# These are the commands are used to debug a docker container and return a page containing Hello Holberton
+
+docker run -p 8080:80 -d -it holbertonschool/265-0
+docker ps
+docker exec -it vigilant_tesla /bin/bash
+service apache2 start
+ls /var/www/html
+service apache2 restart
+exit
