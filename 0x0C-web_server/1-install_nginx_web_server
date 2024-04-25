@@ -5,6 +5,22 @@
 sudo apt-get update
 sudo apt-get install -y nginx
 
+# start NGINX
+sudo service nginx start
+
+# allow NGINX on firewall
+sudo ufw allow 'Nginx HTTP'
+
+# update user ownership to website files for easy editing
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+
+# backup default index
+cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+
+# Create new index
+echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
+
 # configure NGINX to listen on port 80
 sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
 
