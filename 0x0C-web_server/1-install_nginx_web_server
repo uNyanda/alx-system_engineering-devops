@@ -1,28 +1,33 @@
 #!/usr/bin/env bash
-# This script install NGINX web server
+# This script installs NGINX web server and configures it
 
-# install Nginx
+# Install Nginx
 sudo apt-get update
 sudo apt-get install -y nginx
 
-# start NGINX
-sudo service nginx start
-
-# allow NGINX on firewall
+# Allow NGINX through the firewall
 sudo ufw allow 'Nginx HTTP'
 
-# update user ownership to website files for easy editing
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
+# Create a custom Nginx configuration file
+echo '
+server {
+    listen 80;
+    server_name localhost;
 
-# backup default index
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+    location / {
+        return 200 "Hello World!";
+    }
+}
+' | sudo tee /etc/nginx/sites-available/my_custom_site > /dev/null
 
-# Create new index
-echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
+# Enable the custom site
+sudo ln -s /etc/nginx/sites-available/my_custom_site /etc/nginx/sites-enabled/
 
-# configure NGINX to listen on port 80
-sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+# Remove the default configuration
+sudo rm /etc/nginx/sites-enabled/default
 
-# restart NGINX
-sudo service nginx restart
+# Test the configuration
+sudo nginx -t
+
+# Restart NGINX
+sudo systemctl restart nginx
