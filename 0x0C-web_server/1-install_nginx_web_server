@@ -31,3 +31,4 @@ sudo nginx -t
 
 # Restart NGINX
 sudo systemctl restart nginx
+
