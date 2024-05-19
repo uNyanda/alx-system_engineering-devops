@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 # This script displays all active IPv4 IPs on my machine.
 
-# Get all the network interfaces
-interfaces=$(ls /sys/class/net)
-
-for interface in $interfaces
-do
-    # Check if the interface is up
-    if [[ $(cat /sys/class/net/$interface/operstate) = "up" ]]
+for interface in /sys/class/net/*; do
+    interface=$(basename "$interface")
+    if [[ $(cat /sys/class/net/"$interface"/operstate) = "up" ]]
     then
-        # Get the IP address assigned to the interface
-        ip=$(ip -4 addr show $interface | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-        echo $ip
+        ip=$(ip -4 addr show "$interface" | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+        echo "$ip"
     fi
 done
