@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SSH Client configuration
 
-Host 34.229.69.237
+Host 52.72.75.91
      PasswordAuthentication no
      IdentityFile ~/.ssh/school
