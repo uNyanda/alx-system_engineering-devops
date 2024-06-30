@@ -5,21 +5,14 @@ new_string="\	location /redirect_me {\n\t\treturn 301 https://www.youtube.com/wa
 # Backup the original configuration file
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 
-# Check if there's an uncommented 'server {' line and insert new_string after it
-if ! grep -q "^[^#]*server {" /etc/nginx/sites-available/default; then
-    echo "No uncommented 'server {' line found"
-    exit 1
-fi
-
 # Insert the new_string after the first uncommented 'server {' line found
 sudo sed -i "/^[^#]*server {/a $new_string" /etc/nginx/sites-available/default
-
-# Check Nginx configuration syntax
-sudo nginx -t
 
 # Restart Nginx to apply chanes if configuration test passes
 if sudo nginx -t; then
     sudo systemctl restart nginx
+    echo "301"
 else
     echo "Nginx configuration failed."
+    exit 1
 fi
