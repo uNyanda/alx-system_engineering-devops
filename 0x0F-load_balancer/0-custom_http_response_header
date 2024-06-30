@@ -13,7 +13,7 @@ sudo nginx -t # Test the configuration
 sudo systemctl reload nginx # Reload Nginx
 
 # Verification
-if curl -sI localhost | grep -q "X-Server-By"; then
+if curl -sI localhost | grep -q "X-Served-By"; then
 	echo "Configured custom HTTP response header successfully"
 else
 	echo "Configuration failed. Check Nginx logs."
