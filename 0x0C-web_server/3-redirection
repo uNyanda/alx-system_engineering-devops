@@ -1,5 +1,25 @@
 #!/usr/bin/env bash
 # This script configures my Nginx server so that /redirect_me is redirecting to another page.
-new_string="location /redirect_me {\n    return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}"
-sudo sed -i "s|location /redirect_me {.*}|$new_string|" /etc/nginx/sites-available/default
-sudo systemctl restart nginx
+new_string="\	location /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
+
+# Backup the original configuration file
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+# Check if there's an uncommented 'server {' line and insert new_string after it
+if ! grep -q "^[^#]*server {" /etc/nginx/sites-available/default; then
+    echo "No uncommented 'server {' line found"
+    exit 1
+fi
+
+# Insert the new_string after the first uncommented 'server {' line found
+sudo sed -i "/^[^#]*server {/a $new_string" /etc/nginx/sites-available/default
+
+# Check Nginx configuration syntax
+sudo nginx -t
+
+# Restart Nginx to apply chanes if configuration test passes
+if sudo nginx -t; then
+    sudo systemctl restart nginx
+else
+    echo "Nginx configuration failed."
+fi
