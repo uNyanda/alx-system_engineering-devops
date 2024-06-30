@@ -14,9 +14,9 @@ sudo systemctl reload nginx # Reload Nginx
 
 # Verification
 if curl -sI localhost | grep -q "X-Served-By"; then
-	echo "Configured custom HTTP response header successfully"
+    echo "Configured custom HTTP response header successfully"
+    exit 0
 else
-	echo "Configuration failed. Check Nginx logs."
+    echo "Configuration failed. Check Nginx logs."
+    exit 1
 fi
-
-exit 0
