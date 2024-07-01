@@ -1,0 +1,35 @@
+#!/bin/bash
+# This bash script configures my Nginx to listen to port 80.
+
+# Check if Nginx is running
+if ! systemctl is-active --quiet nginx; then
+	echo "Nginx is not running, starting it.."
+	sudo systemctl start nginx
+	sleep 3 # Wait for nginx to start
+fi
+
+# Check if Nginx is listening on port 80
+if ! sudo netstat -tuln | grep ':80\s'; then
+	echo "Nginx is not listening on port 80. Checking configuration... "
+
+	# Check Nginx configuration for listen directives
+	listen_directive=$(sudo grep -i 'listen\s' /etc/nginx/nginx.conf)
+	if [[ -z "$listen_directive" ]]; then
+		echo "No listen directive found in Nginx configuration. Adding... "
+
+		# Add listen directive to Nginx configuration
+		sudo sed -i '/http {/a \	listen 80;' /etc/nginx/nginx.conf
+
+		# Restart Nginx to apply changes
+		sudo systemctl restart nginx
+		sleep 3
+	fi
+
+	# Check again if Nginx is now listening on port 80
+	if ! sudo netstat -tuln | grep ':80\s'; then
+		echo "Nginx is still not listening on port 80. Please check Nginx configuration"
+		exit 1
+	fi
+else
+	echo "Nginx is now listening on port 80."
+fi
