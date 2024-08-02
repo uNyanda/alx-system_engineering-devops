@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# This script will display listening ports
+
+# Use netstat command to list all listening sockets
+# -l: Show only listening sockets
+# -t: Show TCP connections
+# -u: Show UDP connections
+# -n: Show numerical addresses
+# -p: Show the PID and name of the program to which each socket belongs
+
+netstat -l -n -t -u -p
+
+netstat -l -x -p
