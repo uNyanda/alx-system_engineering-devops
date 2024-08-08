@@ -3,8 +3,8 @@
 This script returns information about an employee's TODO list progress,
 for a given employee ID.
 """
-import sys
 import requests
+import sys
 
 
 def get_employee_data(employee_id):
