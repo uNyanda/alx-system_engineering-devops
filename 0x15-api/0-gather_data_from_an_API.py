@@ -18,15 +18,14 @@ def get_employee_data(employee_id):
         tuple: A tuple containing two elements:
             - dict: The employee's data containing keys like 'id', 'name',
                     'username', etc.
-            -list: A list of dictionaries, each representing a TODO task
+            - list: A list of dictionaries, each representing a TODO task
                     for the employee. Each dictionary contains keys like
                     'userID', 'id', 'title', 'completed'.
 
     Raises:
-        requests.exceptions.RequestExceptions: If there is an issue with
+        requests.exceptions.RequestException: If there is an issue with
         the HTTP requests.
     """
-    # Base URL for the API
     base_url = "https://jsonplaceholder.typicode.com/"
 
     # Fetch user data
@@ -38,6 +37,7 @@ def get_employee_data(employee_id):
     todos_response = requests.get(f"{base_url}todos?userId={employee_id}")
     todos_response.raise_for_status()
     todos_data = todos_response.json()
+
     return user_data, todos_data
 
 
@@ -79,8 +79,8 @@ def display_todo_progress(employee_id):
 
     # Print the employee TODO list progress
     print(
-        "Employee " + employee_name + " is done with tasks(" +
-        str(done_tasks) + "/" + str(total_tasks) + "):"
+        f"Employee {employee_name} is done with tasks({done_tasks}/"
+        f"{total_tasks}):"
     )
 
     # Print the titles of completed tasks
