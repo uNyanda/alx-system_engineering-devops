@@ -38,7 +38,6 @@ def get_employee_data(employee_id):
     todos_response = requests.get(f"{base_url}todos?userId={employee_id}")
     todos_response.raise_for_status()
     todos_data = todos_response.json()
-
     return user_data, todos_data
 
 
@@ -68,34 +67,31 @@ def display_todo_progress(employee_id):
              TASK_TITLE_2
              ...
     """
-    # Get the employee data
-    data = get_employee_data(employee_id)
-    if data is None:
+    user_data, todos_data = get_employee_data(employee_id)
+
+    if user_data is None or todos_data is None:
         return
 
-    user_data, todos_data = data
-
-    # Employee name
     employee_name = user_data.get('name')
 
-    # Calculate the number of completed and total tasks
     total_tasks = len(todos_data)
     done_tasks = sum(1 for task in todos_data if task.get('completed'))
 
     # Print the employee TODO list progress
-    print(f"Employee {employee_name} is done\
-          with tasks({done_tasks}/{total_tasks}):")
+    print(
+        "Employee " + employee_name + " is done with tasks(" +
+        str(done_tasks) + "/" + str(total_tasks) + "):"
+    )
 
     # Print the titles of completed tasks
     for task in todos_data:
         if task.get('completed'):
-            print(f"\t {task.get('title')}")
+            print(f"    {task.get('title')}")
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python3 0-gather_data_from_an_API.py\
-              <employee_id>")
+        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
         sys.exit(1)
 
     try:
