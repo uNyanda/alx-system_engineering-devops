@@ -6,7 +6,26 @@ for a given employee ID.
 import sys
 import requests
 
+
 def get_employee_data(employee_id):
+    """
+    Fetches the employee data and their TODO list from the API.
+
+    Args:
+        employee_id (int): The ID of the employee.
+
+    Returns:
+        tuple: A tuple containing two elements:
+            - dict: The employee's data containing keys like 'id', 'name',
+                    'username', etc.
+            -list: A list of dictionaries, each representing a TODO task
+                    for the employee. Each dictionary contains keys like
+                    'userID', 'id', 'title', 'completed'.
+
+    Raises:
+        requests.exceptions.RequestExceptions: If there is an issue with
+        the HTTP requests.
+    """
     # Base URL for the API
     base_url = "https://jsonplaceholder.typicode.com/"
 
@@ -26,7 +45,33 @@ def get_employee_data(employee_id):
 
     return user_data, todos_data
 
+
 def display_todo_progress(employee_id):
+    """
+    Displays the TODO list progress of a given employee.
+
+    This function fetches the employee's data and TODO list using the
+    `get_employee_data` function, calculates the number of completed
+    and total tasks, and prints the employee's TODO list progress in a
+    specific format.
+
+    Args:
+        employee_id (int): The ID of the employee.
+
+    Returns:
+        None
+
+    Prints:
+        The employee's name, number of completed tasks, total number of tasks,
+        and the titles of the completed tasks to the standard output in the
+        following format:
+
+        Employee EMPLOYEE_NAME is done with tasks
+        (NUMBER_OF_DONE_TASKS/TOTAL_NUMBER_OF_TASKS):
+             TASK_TITLE_1
+             TASK_TITLE_2
+             ...
+    """
     # Get the employee data
     data = get_employee_data(employee_id)
     if data is None:
@@ -42,16 +87,19 @@ def display_todo_progress(employee_id):
     done_tasks = sum(1 for task in todos_data if task.get('completed'))
 
     # Print the employee TODO list progress
-    print(f"Employee {employee_name} is done with tasks({done_tasks}/{total_tasks}):")
+    print(f"Employee {employee_name} is done\
+          with tasks({done_tasks}/{total_tasks}):")
 
     # Print the titles of completed tasks
     for task in todos_data:
         if task.get('completed'):
             print(f"\t {task.get('title')}")
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
+        print("Usage: python3 0-gather_data_from_an_API.py\
+              <employee_id>")
         sys.exit(1)
 
     try:
