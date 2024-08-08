@@ -31,16 +31,12 @@ def get_employee_data(employee_id):
 
     # Fetch user data
     user_response = requests.get(f"{base_url}users/{employee_id}")
-    if user_response.status_code != 200:
-        print("Error fetching user data")
-        return None
+    user_response.raise_for_status()
     user_data = user_response.json()
 
     # Fetch TODO list data
     todos_response = requests.get(f"{base_url}todos?userId={employee_id}")
-    if todos_response.status_code != 200:
-        print("Error fetching TODO list")
-        return None
+    todos_response.raise_for_status()
     todos_data = todos_response.json()
 
     return user_data, todos_data
