@@ -86,7 +86,7 @@ def display_todo_progress(employee_id):
     # Print the titles of completed tasks
     for task in todos_data:
         if task.get('completed'):
-            print(f"    {task.get('title')}")
+            print(f"\t {task.get('title')}")
 
 
 if __name__ == "__main__":
